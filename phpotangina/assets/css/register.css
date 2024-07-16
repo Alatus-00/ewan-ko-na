@@ -1,0 +1,80 @@
+* {
+    padding: 10;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.registration__form__container {
+    max-width: 800px;
+    width: 100%;
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form__header {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.form__group {
+    margin-bottom: 1.5rem;
+}
+
+.form__group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.form__group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--text-light);
+    border-radius: 5px;
+    outline: none;
+}
+
+.form__group button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form__group button:hover {
+    background-color: var(--primary-color-dark);
+}
+
+.form__group a {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.form__group a:hover {
+    text-decoration: underline;
+}
