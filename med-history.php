@@ -1,0 +1,94 @@
+<?php
+session_start();
+include 'dbconn.php';
+include 'predefined-functions.php';
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: user-login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Fetch user name
+$query = $conn->prepare("SELECT given_name FROM users WHERE user_id = ?");
+$query->bind_param("i", $user_id);
+$query->execute();
+$query->bind_result($user_name);
+$query->fetch();
+$query->close();
+
+// Fetch pets' medical history
+$query = $conn->prepare("
+    SELECT 
+        p.pet_id, p.pet_name, p.pet_breed, p.pet_species, v.vet_name, s.session_details 
+    FROM 
+        pets p 
+    JOIN 
+        sessions s ON p.pet_id = s.pet_id 
+    JOIN 
+        veterinarians v ON s.vet_id = v.vet_id 
+    WHERE 
+        p.user_id = ?
+");
+$query->bind_param("i", $user_id);
+$query->execute();
+$result = $query->get_result();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Medical History</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<?php callHeader(); ?>
+
+<div class="section__container">
+    <h2 class="section__header">Medical History of <?= htmlspecialchars($user_name) ?>'s Pets</h2>
+    
+    <div class="table-container">
+        <?php if ($result->num_rows > 0): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pet ID</th>
+                        <th>Pet Name</th>
+                        <th>Pet Breed</th>
+                        <th>Pet Species</th>
+                        <th>Vet Name</th>
+                        <th>Session Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['pet_id']) ?></td>
+                            <td><?= htmlspecialchars($row['pet_name']) ?></td>
+                            <td><?= htmlspecialchars($row['pet_breed']) ?></td>
+                            <td><?= htmlspecialchars($row['pet_species']) ?></td>
+                            <td><?= htmlspecialchars($row['vet_name']) ?></td>
+                            <td><?= htmlspecialchars($row['session_details']) ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No history yet for <?= htmlspecialchars($user_name) ?>'s pet/s.</p>
+        <?php endif; ?>
+    </div>
+</div>
+
+<?php callFooter(); ?>
+</body>
+</html>
+
+<?php
+$query->close();
+$conn->close();
+?>
