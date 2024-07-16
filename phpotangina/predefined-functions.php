@@ -1,5 +1,4 @@
 <?php
-
 function callHeader(){
     echo '<header class="header">
       <nav>
@@ -22,21 +21,6 @@ function callHeader(){
           <li class="link"><button class="btn">Contact Us</button></li>
         </ul>
       </nav>
-      <div class="section__container header__container" id="home">
-        <div class="header__image">
-          <img src="assets/img/header.png" alt="header" />
-        </div>
-        <div class="header__content">
-          <h4>Welcome to</h4>
-          <h1 class="section__header">Paws & Whiskers</h1>
-          <p>
-            At Paws & Whiskers, we are dedicated to providing the best care for your pets. Schedule an appointment today and let us take care of your furry friends!
-          </p>
-          <div class="header__btn">
-            <button class="btn">Book an Appointment</button>
-          </div>
-        </div>
-      </div>
     </header>';
 }
 
