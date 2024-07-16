@@ -33,7 +33,7 @@ function callHeader(){
             At Paws & Whiskers, we are dedicated to providing the best care for your pets. Schedule an appointment today and let us take care of your furry friends!
           </p>
           <div class="header__btn">
-            <button class="btn">Book an Appointment</button>
+            <a href="appointment.php"><button class="btn">Book an Appointment</button></a>
           </div>
         </div>
       </div>
