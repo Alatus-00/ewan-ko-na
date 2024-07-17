@@ -2,10 +2,10 @@
     session_start();
 
     if(!isset($_SESSION['user_id'])){
-        header("location: login.php");
-    }else if(isset($_SESSION['user_id'])){
-        $user_id = $_SESSION['user_id'];
+        header("location: user-login.php");
     }
+
+    $user_id = $_SESSION['user_id'];
 
     include 'dbconn.php';
 
@@ -31,7 +31,7 @@
     <title>Profile - Paws & Whiskers Veterinary Appointment System</title>
 </head>
 <body>
-    <?php include 'header.php';?>
+    <?php callHeader(); ?>
 
     <section class="section__container profile__container" id="profile">
         <div class="profile_header">
