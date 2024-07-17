@@ -9,7 +9,7 @@
     //     exit();
     // }
 
-    $result = mysqli_query($conn, "SELECT * FROM animal_info");
+    // $result = mysqli_query($conn, "SELECT * FROM animal_info");
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +53,7 @@
                 Below is the information about the animals in our database.
             </p>
         </div>
-        <div class="appointment__form__container">
+        <div class="general__form__container">
             <?php if(isset($message)): ?>
                 <p><?php echo $message; ?></p>
             <?php endif; ?>

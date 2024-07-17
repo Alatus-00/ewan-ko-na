@@ -53,28 +53,11 @@
     <title>Appointment - Paws & Whiskers Veterinary Appointment System</title>
 </head>
 <body>
-    <header class="header">
-        <nav>
-            <div class="nav__header">
-                <div class="nav__logo">
-                    <a href="index.php"><img src="assets/img/logo.png" alt="logo">Paws & Whiskers</a>
-                </div>
-                <div class="nav__menu__btn" id="menu-btn">
-                    <span><i class="ri-menu-line"></i></span>
-                </div>
-            </div>
-            <ul class="nav__links" id="nav-links">
-                <li class="link"><a href="index.php#home">Home</a></li>
-                <li class="link"><a href="index.php#about">About</a></li>
-                <li class="link"><a href="index.php#services">Services</a></li>
-                <li class="link"><a href="index.php#vets">Our Vets</a></li>
-                <li class="link"><a href="index.php#plans">Plans</a></li>
-                <li class="link"><a href="appointment.php">Appointment</a></li>
-                <li class="link"><a href="index.php#account">Account</a></li>
-                <li class="link"><button class="btn">Contact Us</button></li>
-            </ul>
-        </nav>
-    </header>
+<?php
+include "predefined-functions.php";
+callHeader() ;
+
+?>
 
     <section class="section__container appointment__container" id="appointment">
         <div class="appointment__header">

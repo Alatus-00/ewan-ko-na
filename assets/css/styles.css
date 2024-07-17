@@ -46,12 +46,23 @@ label {
   font-weight: 500;
 }
 
-input, textarea {
+input, textarea, select {
   margin-bottom: 1rem;
   padding: 0.75rem;
   border: 1px solid var(--text-light);
   border-radius: 4px;
   font-size: 1rem;
+  appearance: none; /* For consistent styling across browsers */
+}
+
+select {
+  background-color: var(--white);
+  color: var(--text-dark);
+}
+
+select:focus, input:focus, textarea:focus {
+  border-color: var(--primary-color-dark);
+  outline: none;
 }
 
 button {
@@ -748,6 +759,7 @@ nav {
 }
 
 .form__group input,
+.form__group select,
 .form__group textarea {
   padding: 0.75rem;
   outline: none;
