@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $confirm_password = $_POST['confirm_password'];
 
     if (empty($given_name) || empty($surname) || empty($email) || empty($contact_number) || empty($birthday) || empty($sex) || empty($address) || empty($password) || empty($confirm_password)) {
-        $empty_err = "All fields are required.";
+        $empty_err = "All fields must be filled out.";
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pass_err = "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character";
     }
 
-    if (empty($errors)) {
+    if (empty($empty_err) && empty($contact_err) && empty($email_err) && empty($pass_err) && empty($conpass_err)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $stmt = $conn->prepare("INSERT INTO users (given_name, middle_name, surname, email, contact_number, birthday, sex, address, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -73,20 +73,13 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://kit.fontawesome.com/e8975f4132.js" crossorigin="anonymous"></script>
 <body>
-<div class="alert show">
-    <span class="fas fa-exclamation-circle"></span>
-    <span class="msg">Warning: This is a warning alert!</span>
-    <span class="close-btn">
-        <span class="fas fa-times"></span>
-    </span>
-</div>
 <div class="registration__form__container">
     <h1 class="form__header">User Registration</h1>
-        <form action="" method="POST">
+    <form action="" method="POST">
+            <?php display_error($empty_err)?>
         <div class="form__group">
         <label for="given_name">Given Name:</label>
-        <input type="text" id="given_name" name="given_name" value="<?php echo $given_name; ?>" required>
-        <?php display_error($empty_err)?>
+        <input type="text" id="given_name" name="given_name" value="<?php echo $given_name; ?>" >
         <br>
     </div>
     
@@ -98,34 +91,33 @@ $conn->close();
     
     <div class="form__group">
         <label for="surname">Surname:</label>
-        <input type="text" id="surname" name="surname" value="<?php echo $surname; ?>" required>
-        <?php display_error($empty_err)?>
+        <input type="text" id="surname" name="surname" value="<?php echo $surname; ?>" >
         <br>
     </div>
     
     <div class="form__group">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<?php echo $email; ?>" required>
+        <input type="email" id="email" name="email" value="<?php echo $email; ?>" >
         <?php display_error($email_err)?>
         <br>
     </div>
     
     <div class="form__group">
         <label for="contact_number">Contact Number:</label>
-        <input type="text" id="contact_number" name="contact_number" value="<?php echo $contact; ?>" required>
+        <input type="text" id="contact_number" name="contact_number" value="<?php echo $contact; ?>" >
         <?php display_error($contact_err)?>
         <br>
     </div>
     
     <div class="form__group">
         <label for="birthday">Birthday:</label>
-        <input type="date" id="birthday" name="birthday" max="<?php date('Y-m-d'); ?>" required>
+        <input type="date" id="birthday" name="birthday" max="<?php date('Y-m-d'); ?>" >
         <br>
     </div>
     
     <div class="form__group">
         <label for="sex">Sex:</label>
-        <select id="sex" name="sex" required>
+        <select id="sex" name="sex" >
             <option value="M">Male</option>
             <option value="F">Female</option>
             <option value="Other">Other</option>
@@ -135,21 +127,20 @@ $conn->close();
     
     <div class="form__group">
         <label for="address">Address:</label>
-        <textarea id="address" name="address" value="<?php echo $address; ?>" required></textarea>
-        <?php display_error($empty_err)?>
+        <textarea id="address" name="address" value="<?php echo $address; ?>" ></textarea>
         <br>
     </div>
     
     <div class="form__group">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+        <input type="password" id="password" name="password"  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
         <?php display_error($pass_err)?>
         <br>
     </div>
     
     <div class="form__group">
         <label for="confirm_password">Confirm Password:</label>
-        <input type="password" id="confirm_password" name="confirm_password" required>
+        <input type="password" id="confirm_password" name="confirm_password" >
         <?php display_error($conpass_err)?>
         <br>
         </div>
@@ -161,21 +152,5 @@ $conn->close();
         <a id="loginLink" href="user-login.php">Already have an account? Login here</a>
         </div>
     </form>
-
-    <script>
-        $('button').click(function(){
-            $('.alert').removeClass("hide");
-            $('.alert').addClass("show");
-            $('.alert').addClass("showAlert");
-            setTimeout(function(){
-                $('.alert').addClass("hide");
-                $('.alert').removeClass("show");
-            },10000);
-        });
-        $('.close-btn').click(function(){
-            $('.alert').addClass("hide");
-            $('.alert').removeClass("show");
-        });
-    </script>
 </body>
 </html>
