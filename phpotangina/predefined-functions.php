@@ -17,7 +17,7 @@ function callHeader(){
           <li class="link"><a href="#vets">Our Vets</a></li>
           <li class="link"><a href="#plans">Plans</a></li>
           <li class="link"><a href="appointment.php">Appointment</a></li>
-          <li class="link"><a href="#account">Account</a></li>
+          <li class="link"><a href="profile.php">Account</a></li>
           <li class="link"><button class="btn">Contact Us</button></li>
         </ul>
       </nav>
