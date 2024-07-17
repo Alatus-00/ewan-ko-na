@@ -7,7 +7,6 @@
     $fetchVet = "SELECT vet_id, vet_name FROM veterinarians";
     $vetResult = mysqli_query($conn,$fetchVet);
     if(isset($_POST['save'])){
-        // include 'dbconn.php';
 
         function sanitize($data) {
             global $conn;
@@ -114,8 +113,15 @@
                     </select>
                 </div>
                 <div class="form__group">
-                    <label for="session">Session Type</label>
-                    <input type="text" id="session" name="session" placeholder="Enter session details? or select nalang based sa vet" required>
+                    <label for="session_type">Session Type</label>
+                    <select name="session_type" id="session_type">
+                        <option value="Consult">General Consultation</option>
+                        <option value="Vaccination">Vaccination</option>
+                        <option value="Surgery">Surgery</option>
+                        <option value="Rehabilitation">Rehabilitation</option>
+                        <option value="Grooming">Groom Service</option>
+                        <option value="Daycare">Daycare</option>
+                    </select>
                 </div>
                 <div class="form__group">
                     <button type="submit" name="save" class="btn">Book Appointment</button>
