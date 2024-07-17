@@ -1,51 +1,77 @@
+<?php
+session_start();
+include 'dbconn.php'; 
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $password = $_POST['password'];
+
+    if (empty($email) || empty($password)) {
+        $errors[] = "Email and password are required.";
+    }
+
+    if (empty($errors)) {
+        $stmt = $conn->prepare("SELECT user_id, password FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->bind_result($user_id, $hashed_password);
+        $stmt->fetch();
+        $stmt->close();
+
+        if ($user_id && password_verify($password, $hashed_password)) {
+            $_SESSION['user_id'] = $user_id;
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            $errors[] = "Invalid email or password.";
+        }
+    }
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Login</title>
     <link rel="stylesheet" href="assets/css/styles.css">
-    <title>User Login</title>
+    <link rel="stylesheet" href="assets/css/reg-login-css.css">
 </head>
 <body>
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="account__container">
-                <div class="account__header">User Login</div>
-                <form class="account__form" action="login.php" method="post">
-                    <div class="form__group">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" required>
-                    </div>
-                    <div class="form__group">
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn">Login</button>
-                </form>
-            </div>
+<div class="registration__form__container">
+    <h1 class="form__header">Log-In</h1>
+    <?php if (!empty($errors)): ?>
+        <div class="errors">
+            <?php foreach ($errors as $error): ?>
+                <p><?= htmlspecialchars($error) ?></p>
+            <?php endforeach; ?>
         </div>
-    </div>
+    <?php endif; ?>
+    <form action="index.php" method="post">
+        <div class="form__group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        </div>
 
-    <script>
-        var modal = document.getElementById("loginModal");
-        var btn = document.getElementById("loginBtn");
-        var span = document.getElementsByClassName("close")[0];
+        <div class="form__group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        </div>
 
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
+        <div class="form__group">
+        <button type="submit">Log-In</button>
+        </div>
+        <div class="form__group">
+        <a id="refister-link" href="user-register.php">Don't have an account yet? Register here.</a>
+        </div>
+    </form>
+</div>
 
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
 </body>
 </html>

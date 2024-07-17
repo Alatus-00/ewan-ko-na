@@ -13,4 +13,11 @@
         function sanitize($input){
                 return strip_tags($input);
         }
+        function display_error($error) {
+                if (!empty($error)) {
+                        echo '<p class="error" style="display: block;">' . htmlspecialchars($error) . '</p>';
+                } else {
+                        echo '<p class="error" style="display: none;"></p>';
+                }
+        }
 ?>
