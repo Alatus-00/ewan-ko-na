@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $conpass_err = "Passwords do not match.";
     }
 
-    if ($password != "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$") {
+    if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/", $password)) {
         $pass_err = "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character";
     }
 
@@ -133,7 +133,7 @@ $conn->close();
     
     <div class="form__group">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password"  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+        <input type="password" id="password" name="password">
         <?php display_error($pass_err)?>
         <br>
     </div>
