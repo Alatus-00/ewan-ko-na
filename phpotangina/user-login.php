@@ -1,14 +1,18 @@
 <?php
 session_start();
 include 'dbconn.php'; 
-$errors = [];
+
+$email = null;
+$pass = null;
+$empty_err = null;
+$invalid_err = null;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
 
     if (empty($email) || empty($password)) {
-        $errors[] = "Email and password are required.";
+        $empty_err = "Email and password are required.";
     }
 
     if (empty($errors)) {
@@ -24,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("Location: dashboard.php");
             exit();
         } else {
-            $errors[] = "Invalid email or password.";
+            $invalid_err = "Invalid email or password.";
         }
     }
 }
@@ -44,26 +48,20 @@ $conn->close();
 <body>
 <div class="registration__form__container">
     <h1 class="form__header">Log-In</h1>
-    <?php if (!empty($errors)): ?>
-        <div class="errors">
-            <?php foreach ($errors as $error): ?>
-                <p><?= htmlspecialchars($error) ?></p>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-    <form action="index.php" method="post">
+    <form action="" method="post">
         <div class="form__group">
+        <?php display_error($empty_err)?>
+        <?php display_error($invalid_err)?>
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email">
         <br>
         </div>
 
         <div class="form__group">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+        <input type="password" id="password" name="password">
         <br>
         </div>
-
         <div class="form__group">
         <button type="submit">Log-In</button>
         </div>
