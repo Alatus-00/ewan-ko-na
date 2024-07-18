@@ -12,7 +12,8 @@
     $user_result = mysqli_query($conn, "SELECT * FROM users WHERE user_id = '$user_id'");
     $user_info = $user_result->fetch_assoc();
     
-    $name = $user_info['given_name'] . " " . $user_info['surname'];
+    $gname = $user_info['given_name'];
+    $sname = $user_info['surname'];
     $email = $user_info['email'];
     $contact = $user_info['contact_number'];
     $address = $user_info['address'];
@@ -39,25 +40,33 @@
         </div>
 
         <div class="profile__form__container">
-            <strong>Owner</strong>
+          <div class="head">
+              <h4>Owner</h4>
+          </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <strong>Name</strong><br> <?php echo $name; ?>
+                        <strong>Name</strong><br>
+                        <div class="content" style="display: inline-block;">
+                          <?php echo $gname . " "; ?>
+                        </div>
+                        <div class="content" style="display: inline-block;">
+                          <?php echo $sname; ?>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <strong>Email</strong><br> <?php echo $email; ?>
+                        <strong>Email</strong> <div class="content"><?php echo $email; ?></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <strong>Contact Number</strong><br> <?php echo $contact; ?>
+                        <strong>Contact Number</strong> <div class="content"><?php echo $contact; ?></div>
                     </div>
                     <div class="col-md-6">
-                        <strong>Address</strong><br> <?php echo $address; ?>
+                        <strong>Address</strong> <div class="content"><?php echo $address; ?></div>
                     </div>
                 </div>
                 <!-- edit button popup edit window-->
-                <button type="button" class="btn btn-success editownerbtn"> EDIT</button>
+                <button type="button" class="btn btn-success editownerbtn mb-3 mt-3">Edit</button>
         </div>
 <!-- EDIT OWNER -->
 <div class="modal fade" id="editowner" tabindex="-1" aria-labelledby="editownerLabel" aria-hidden="true">
@@ -70,40 +79,42 @@
       <form action="" method="post">
       <div class="modal-body">
           <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="" required>
+            <label for="gname">Given Name</label>
+            <input type="text" id="gname" name="gname" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="sname">Surname</label>
+            <input type="text" id="sname" name="sname" class="form-control" required>
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" class="form-control" placeholder="" required>
+            <input type="email" id="email" name="email" class="form-control" required>
           </div>
           <div class="form-group">
             <label for="contact">Contact</label>
-            <input type="contact" id="contact" name="contact" class="form-control" placeholder="" required>
+            <input type="contact" id="contact" name="contact" class="form-control" required>
           </div>
           <div class="form-group">
             <label for="address">Address</label>
-            <input type="address" id="address" name="address" class="form-control" placeholder="" required>
+            <input type="address" id="address" name="address" class="form-control" required>
           </div>
           </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" name="updatebtn" class="btn">Update</button>
+        <button type="submit" name="update_user" class="btn">Update</button>
       </div>
       </form>
     </div>
   </div>
 </div>
 <!--  -->
+  <div class="head">
+    <h4>Pet</h4>
+  </div>
 <?php
 if($pet_result->num_rows > 0){ ?>
   <div class="table-data" id="pet_table">
     <div class="order">
-        <div class="head">
-            <h3>Pet</h3>
-            <i class='bx bx-search'></i>
-            <i class='bx bx-filter'></i>
-        </div>
         <table>
             <thead>
               <tr>
@@ -123,7 +134,7 @@ if($pet_result->num_rows > 0){ ?>
                   <td><?php echo htmlspecialchars($pet['pet_name']); ?></td>
                   <td><?php echo htmlspecialchars($pet['pet_species']); ?></td>
                   <td><?php echo htmlspecialchars($pet['pet_breed']); ?></td>
-                  <td><?php echo htmlspecialchars($pet['pet_bday']); ?></td>
+                  <td><?php echo htmlspecialchars($pet['pet_age']); ?></td>
                   <td><?php echo htmlspecialchars($pet['pet_gender']); ?></td>
                   <td><?php echo htmlspecialchars($pet['pet_weight']); ?></td>
                   <td><button type="button" class="btn btn-success editpetbtn"> EDIT</button></td>
@@ -166,8 +177,8 @@ if($pet_result->num_rows > 0){ ?>
         </div>
 
         <div class="form__group">
-            <label for="pet_bday">Birthday</label>
-            <input type="date" name="pet_bday" required min="<?php date('Y-m-d');?>">
+            <label for="pet_age">Age</label>
+            <input type="number" name="pet_age" required>
         </div>
 
         <div class="form__group">
@@ -177,7 +188,7 @@ if($pet_result->num_rows > 0){ ?>
 
         <div class="form__group">
             <label for="pet_weight">Weight</label>
-            <input type="text" name="pet_weight" placeholder="Enter your pet weight" min="0" required>
+            <input type="text" name="pet_weight" placeholder="Enter your pet weight" required>
         </div>
       </div>
       <div class="modal-footer">
@@ -213,8 +224,8 @@ if($pet_result->num_rows > 0){ ?>
             <input type="text" id="pet_breed" name="pet_breed" class="form-control" placeholder="Enter your pet breed" required>
           </div>
           <div class="form-group">
-            <label for="pet_bday">Birthday</label>
-            <input type="date" id="pet_bday" name="pet_bday" class="form-control" required>
+            <label for="pet_age">Age</label>
+            <input type="number" id="pet_age" name="pet_age" class="form-control" required>
           </div>
           <div class="form-group">
             <label for="pet_gender">Gender</label>
@@ -260,50 +271,79 @@ if($pet_result->num_rows > 0){ ?>
             $('#editpet #pet_name').val(data[0]);
             $('#editpet #pet_species').val(data[1]);
             $('#editpet #pet_breed').val(data[2]);
-            $('#editpet #pet_bday').val(data[3]);
+            $('#editpet #pet_age').val(data[3]);
             $('#editpet #pet_gender').val(data[4]);
             $('#editpet #pet_weight').val(data[5]);
         });
 
-        // $('.deletebtn').on('click', function() {
-        //   $tr = $(this).closest('tr');
-        //   var petId = $tr.data('pet-id');
-        //   window.location.href = 'delete_pet.php?id=' + petId;
-        // });
+        $('.deletepetbtn').on('click', function() {
+                var $tr = $(this).closest('tr');
+                var petId = $tr.data('pet-id');
+                
+                if (confirm("Are you sure you want to delete this pet?")) {
+                    $.ajax({
+                        url: '',
+                        type: 'POST',
+                        data: { pet_id: petId },
+                        success: function(response) {
+                            if (response == 'success') {
+                                $tr.remove();
+                            } else {
+                                alert('Failed to delete the pet. Please try again.');
+                            }
+                        }
+                    });
+                }
+            });
     });
 
     $(document).ready(function() {
     $('.editownerbtn').on('click', function() {
         $('#editowner').modal('show');
 
-        var name = $('.appointment__form__container .col-md-6').eq(0).text().trim();
-        var email = $('.appointment__form__container .col-md-6').eq(1).text().trim();
-        var contact = $('.appointment__form__container .col-md-6').eq(2).text().trim();
-        var address = $('.appointment__form__container .col-md-6').eq(3).text().trim();
+        // Fetch owner information based on your specific HTML structure
+        var gname = $('.profile__form__container').find('.content:eq(0)').text().trim();
+        var sname = $('.profile__form__container').find('.content:eq(1)').text().trim();
+        var email = $('.profile__form__container').find('.content:eq(2)').text().trim();
+        var contact = $('.profile__form__container').find('.content:eq(3)').text().trim();
+        var address = $('.profile__form__container').find('.content:eq(4)').text().trim();
 
-        console.log(name, email, contact, address);
-
-        $('#editowner #name').val(name);
+        // Set values in the modal fields
+        $('#editowner #gname').val(gname);
+        $('#editowner #sname').val(sname);
         $('#editowner #email').val(email);
         $('#editowner #contact').val(contact);
         $('#editowner #address').val(address);
     });
-  });
+});
+
 </script>
 </body>
 </html>
 
 <?php 
+  if(isset($_POST['update_user'])){
+    $gname = sanitize($_POST['gname']);
+    $sname = sanitize($_POST['sname']);
+    $email = sanitize($_POST['email']);
+    $contact = sanitize($_POST['contact']);
+    $address = sanitize($_POST['address']);
+
+    $update_user = $conn->prepare("UPDATE users SET given_name = ?, surname = ?, email = ?, contact_number = ?, address = ? WHERE user_id = ?");
+    $update_user->bind_param("sssssi", $gname, $sname, $email, $contact, $address, $user_id);      
+    $update_user->execute();
+    $update_user->close();
+  }
   if(isset($_POST['add_pet'])){
     $pet_name = sanitize($_POST['pet_name']);
     $pet_species = sanitize($_POST['pet_species']);
     $pet_breed = sanitize($_POST['pet_breed']);
-    $pet_bday = sanitize($_POST['pet_bday']);
+    $pet_age = sanitize($_POST['pet_age']);
     $pet_gender = sanitize($_POST['pet_gender']);
     $pet_weight = sanitize($_POST['pet_weight']);
 
-    $add_pet = $conn->prepare("INSERT INTO pets (user_id, pet_name, pet_species, pet_breed, pet_bday, pet_gender, pet_weight) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $add_pet->bind_param("issssss", $user_id, $pet_name, $pet_species, $pet_breed, $pet_bday, $pet_gender, $pet_weight);
+    $add_pet = $conn->prepare("INSERT INTO pets (user_id, pet_name, pet_species, pet_breed, pet_age, pet_gender, pet_weight) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $add_pet->bind_param("issssss", $user_id, $pet_name, $pet_species, $pet_breed, $pet_age, $pet_gender, $pet_weight);
     $add_pet->execute();
     $add_pet->close();
   }
@@ -312,15 +352,20 @@ if($pet_result->num_rows > 0){ ?>
     $pet_name = sanitize($_POST['pet_name']);
     $pet_species = sanitize($_POST['pet_species']);
     $pet_breed = sanitize($_POST['pet_breed']);
-    $pet_bday = sanitize($_POST['pet_bday']);
+    $pet_age = sanitize($_POST['pet_age']);
     $pet_gender = sanitize($_POST['pet_gender']);
     $pet_weight = sanitize($_POST['pet_weight']);
 
-    $update_pet = $conn->prepare("UPDATE pets SET pet_name = ?, pet_species = ?, pet_breed = ?, pet_bday = ?, pet_gender = ?, pet_weight = ? WHERE user_id = ? AND pet_id = ?");
-    $update_pet->bind_param("ssssssii", $pet_name, $pet_species, $pet_breed, $pet_bday, $pet_gender, $pet_weight, $user_id, $pet_id);      
+    $update_pet = $conn->prepare("UPDATE pets SET pet_name = ?, pet_species = ?, pet_breed = ?, pet_age = ?, pet_gender = ?, pet_weight = ? WHERE user_id = ? AND pet_id = ?");
+    $update_pet->bind_param("ssssssii", $pet_name, $pet_species, $pet_breed, $pet_age, $pet_gender, $pet_weight, $user_id, $pet_id);      
     $update_pet->execute();
     $update_pet->close();
-
+  }
+  if (isset($_POST['pet_id'])) {
+    $pet_id = $_POST['pet_id'];
+    $delete_pet = $conn->prepare("DELETE FROM pets WHERE pet_id = ?");
+    $delete_pet->bind_param("i", $pet_id);
+    $delete_pet->execute();
   }
   $conn->close();
   if (isset($_GET['action']) && $_GET['action'] == 'logout') {
