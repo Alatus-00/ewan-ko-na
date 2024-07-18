@@ -4,7 +4,6 @@ include 'dbconn.php';
 
 $email = null;
 $pass = null;
-$empty_err = null;
 $invalid_err = null;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -12,24 +11,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     if (empty($email) || empty($password)) {
-        $empty_err = "Email and password are required.";
+        $invalid_err = "Email and password are required.";
     }
-
-    if (empty($errors)) {
+    elseif($email == 'admin' && $password == '123'){
+        $_SESSION['admin_id'] = '0';
+        header("Location: admin.php");
+        exit();
+    }
+    else {
         $stmt = $conn->prepare("SELECT user_id, password FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
-        $stmt->bind_result($user_id, $hashed_password);
-        $stmt->fetch();
-        $stmt->close();
-
-        if ($user_id && password_verify($password, $hashed_password)) {
-            $_SESSION['user_id'] = $user_id;
-            header("Location: dashboard.php");
-            exit();
-        } else {
-            $invalid_err = "Invalid email or password.";
+        $stmt->store_result();
+        
+        if($stmt->num_rows == 1){
+            $stmt->bind_result($user_id, $hashed_password);
+            $stmt->fetch();
+            if ($user_id && password_verify($password, $hashed_password)) {
+                $_SESSION['user_id'] = $user_id;
+                header("Location: homepage.php");
+                exit();
+            } else {
+                $invalid_err = "Invalid email or password.";
+            }
+        }else{
+            $invalid_err = "Invalid credentials";
         }
+        $stmt->close();
     }
 }
 
@@ -50,10 +58,9 @@ $conn->close();
     <h1 class="form__header">Log-In</h1>
     <form action="" method="post">
         <div class="form__group">
-        <?php display_error($empty_err)?>
         <?php display_error($invalid_err)?>
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email">
+        <input type="text" id="email" name="email">
         <br>
         </div>
 

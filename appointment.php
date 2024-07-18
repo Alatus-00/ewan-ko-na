@@ -1,6 +1,11 @@
 <?php 
     session_start();
     include 'predefined-functions.php';
+    
+    if(!isset($_SESSION['user_id'])){
+        header("location: user-login.php");
+    }
+    
     include 'dbconn.php';
     $fetchPet = "SELECT pet_id, pet_name FROM pets WHERE user_id='1'";
     $petResult = mysqli_query($conn,$fetchPet);

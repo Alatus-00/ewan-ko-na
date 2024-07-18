@@ -6,15 +6,15 @@
     }
 
     $user_id = $_SESSION['user_id'];
-
+    require_once 'predefined-functions.php';
     include 'dbconn.php';
 
     $user_result = mysqli_query($conn, "SELECT * FROM users WHERE user_id = '$user_id'");
     $user_info = $user_result->fetch_assoc();
     
-    $name = $user_info['name'];
+    $name = $user_info['given_name'] . " " . $user_info['surname'];
     $email = $user_info['email'];
-    $contact = $user_info['contact'];
+    $contact = $user_info['contact_number'];
     $address = $user_info['address'];
     
     $pet_result = mysqli_query($conn, "SELECT * FROM pets WHERE user_id = '$user_id'");
@@ -236,7 +236,7 @@ if($pet_result->num_rows > 0){ ?>
 
     </section>
 
-    <?php include 'footer.php'; ?>
+    <?php callFooter(); ?>
 
 <!-- bootstrap js -->
 
@@ -323,4 +323,7 @@ if($pet_result->num_rows > 0){ ?>
 
   }
   $conn->close();
+  if (isset($_GET['action']) && $_GET['action'] == 'logout') {
+    logout();
+  }  
 ?>

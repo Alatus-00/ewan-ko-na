@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'db_connect.php'; // Include your database connection file
-include 'predefined-functions.php'; // Include the file with the predefined function
+require_once 'predefined-functions.php'; // Include the file with the predefined function
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
